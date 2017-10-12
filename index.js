@@ -83,9 +83,10 @@ app.listen(port, () => {
 })
 
 function Submission (opts) {
-  this.path = opts.path
-  this.name = opts.name
-  this.user = opts.user && opts.user.toLowerCase() // sloppy
+  this.path  = opts.path
+  this.name  = opts.name
+  this.user  = opts.user && opts.user.toLowerCase() // sloppy
+  this.state = opts.state || 'new'
 }
 
 function User (opts) {
