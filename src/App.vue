@@ -14,20 +14,21 @@ export default {
 
 <style>
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     margin: 0;
+    color: #444;
+    display: flex;
+    justify-content: center;
+    font-family: sans-serif;
 }
 
-.app {
-    color: #444;
-    margin-top: 100px;
-    max-width: 600px;
-    font-family: Helvetica, sans-serif;
-    text-align: center;
-    display: flex;
-    align-items: center;
+form {
+  margin-top: 8rem;
+  flex: 1 1 50%;
 }
+
+button { margin-top: 8px; }
+input { margin-top: 8px; }
+p { margin: 0; margin-top: 16px; line-height: 1.4; }
+
 </style>

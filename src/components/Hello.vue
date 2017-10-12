@@ -1,16 +1,17 @@
 <template>
   <div>
-    <img src="/img/logo.png">
-    <h1>{{ msg }}</h1>
+    <form action="http://localhost:8081/api/submission" enctype="multipart/form-data" method="POST">
+      <p> App Name </p>
+      <input name="appName" />
 
-    <select v-model="spoken">
-        <option>One</option>
-        <option>Two Thre Four</option>
-        <option>Barking at the Freaky Door</option>
-        <option>What's in There?</option>
-    </select>
+      <p> Email </p>
+      <input name="email" value="nick@fog.haus" />
 
-    <button @click="speak(spoken)"> Speaker </button>
+      <p> App Binary </p>
+      <input type="file" name="submission" multiple="multiple" />
+
+      <button type="submit"> Upload </button>
+    </form>
   </div>
 </template>
 
@@ -18,24 +19,12 @@
 export default {
   data () {
     return {
-        msg: 'Vue.js - The Progressive JavaScript Framework',
-        spoken: 'Two Thre Four'
     }
   },
-
-        methods: {
-            speak (msg) {
-                if (msg === void 0)
-                    msg = 'bark bark bark'
-
-                console.info(msg)
-            }
-        }
 }
 </script>
 
 <style scoped>
-h1 {
-  padding: 0 .25em;
-}
+input { display: block; }
+button { display: block; }
 </style>
