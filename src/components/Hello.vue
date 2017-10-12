@@ -2,7 +2,7 @@
   <div>
     <form action="http://localhost:8081/api/submission" enctype="multipart/form-data" method="POST">
       <p> App Name </p>
-      <input name="appName" />
+      <input name="appName" value="A Fancy App for All the Chaps" />
 
       <p> Email </p>
       <input name="email" value="nick@fog.haus" />
