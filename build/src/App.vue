@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Hello></Hello>
+    <Hello @submitted="processSubmission"></Hello>
   </div>
 </template>
 
@@ -8,7 +8,17 @@
 import Hello from './components/Hello.vue'
 
 export default {
-  components: { Hello }
+  components: { Hello },
+  methods: {
+    processSubmission (p) {
+      console.info(p)
+
+      this.$az.createBlob(p.file)
+        .then(res => {
+          console.info(res)
+        })
+    }
+  }
 }
 </script>
 

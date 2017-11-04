@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <form action="http://localhost:8081/api/submission" enctype="multipart/form-data" method="POST">
+  <div class="c-form">
       <p> App Name </p>
-      <input name="appName" value="A Fancy App for All the Chaps" />
+      <input v-model="appName" />
 
       <p> Email </p>
-      <input name="email" value="nick@fog.haus" />
+      <input v-model="email" />
 
       <p> App Binary </p>
-      <input type="file" name="submission" multiple="multiple" />
+      <input type="file" @change="file = $event.target.files[0]" />
 
-      <button type="submit"> Upload </button>
-    </form>
+      <button type="button" @click="emitFile"> Upload </button>
   </div>
 </template>
 
@@ -19,8 +17,26 @@
 export default {
   data () {
     return {
+      appName: 'A Fancy App for All the Chaps',
+      email: 'nick@fog.haus',
     }
   },
+
+  methods: {
+    emitFile () {
+      let payload = {
+        appName: this.appName,
+        email: this.email,
+        file: this.file
+      }
+
+      this.appName = ""
+      this.email = ""
+      this.file = null
+
+      this.$emit('submitted', payload)
+    }
+  }
 }
 </script>
 
