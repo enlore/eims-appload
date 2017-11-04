@@ -27,65 +27,8 @@
         <script src="/js/azure-storage.common.js"></script>
         <script src="/js/azure-storage.blob.js"></script>
 
-        <div id="app">
-          <input type="file" @change="setFile"/>
-        </div>
-        <script>
-          new Vue({
-            el: "#app",
-            data: {
-              uploadsAreGo: false,
-              sasToken: null,
-              file: null
-            },
-
-            methods: {
-              setFile: function (f) {
-                let file = f.target.files[0]
-
-                if (this.uploadsAreGo) {
-                  this.client.createBlockBlobFromBrowserFile('mcoe-ipas', file.name, file, (err, res, resp) => {
-                    if (err) console.error(err)
-                    else {
-                      console.info(res)
-                      console.info(resp)
-                    }
-                  })
-                }
-              }
-            },
-
-            created: function () {
-              fetch('https://appload-sas-token.azurewebsites.net/api/GetSasToken-Node?code=ehp76eDOr/1tEGKGtUOU0NdLXXtXtbCoL4vITYairZCaLdZCVqGaig==' // need this?
-                + '&container=mcoe-ipas'
-                + '&permissions=w'
-                , {
-                credentials: 'same-origin',
-              }).then(resp => resp.json().then(data => ({ // whew
-                  ok: resp.ok,
-                  status: resp.status,
-                  data
-                })))
-              .then(resp => {
-                // todo error
-                console.info('appload::init::got a SAS token', resp.data.token)
-                this.sasToken = resp.data.token
-
-                this.client = window.AzureStorage.createBlobServiceWithSas('https://eimsfunchello9c2a.blob.core.windows.net', this.sasToken)
-                this.uploadsAreGo = true
-
-                this.client.createBlockBlobFromText('mcoe-ipas', 'super-blob', 'woo this is a blob', (err, res, resp) => {
-                  if (err) console.warn(err)
-                  else {
-                    console.info('applaod::createBlockBlobFromText:: success?')
-                  }
-                })
-              })
-              .catch(err => { console.error(err) })
-            }
-          })
-        </script>
-        <!--<script src="/js/app.js"></script>-->
+        <div id="app"></div>
+        <script src="/js/app.js"></script>
 
         <!--[><script src="js/vendor/modernizr-3.5.0.min.js"></script><]-->
         <!--[><script src="js/main.js"></script><]-->

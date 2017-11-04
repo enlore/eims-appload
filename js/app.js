@@ -524,7 +524,7 @@ function looseIndexOf (arr, val) {
 /**
  * Ensure a function is called only once.
  */
-function once$$1 (fn) {
+function once (fn) {
   var called = false;
   return function () {
     if (!called) {
@@ -557,7 +557,7 @@ var LIFECYCLE_HOOKS = [
 
 /*  */
 
-var config$$1 = ({
+var config = ({
   /**
    * Option merge strategies (used in core/util/options)
    */
@@ -701,15 +701,15 @@ if (process.env.NODE_ENV !== 'production') {
   warn = function (msg, vm) {
     var trace = vm ? generateComponentTrace(vm) : '';
 
-    if (config$$1.warnHandler) {
-      config$$1.warnHandler.call(null, msg, vm, trace);
-    } else if (hasConsole && (!config$$1.silent)) {
+    if (config.warnHandler) {
+      config.warnHandler.call(null, msg, vm, trace);
+    } else if (hasConsole && (!config.silent)) {
       console.error(("[Vue warn]: " + msg + trace));
     }
   };
 
   tip = function (msg, vm) {
-    if (hasConsole && (!config$$1.silent)) {
+    if (hasConsole && (!config.silent)) {
       console.warn("[Vue tip]: " + msg + (
         vm ? generateComponentTrace(vm) : ''
       ));
@@ -783,8 +783,8 @@ if (process.env.NODE_ENV !== 'production') {
 /*  */
 
 function handleError (err, vm, info) {
-  if (config$$1.errorHandler) {
-    config$$1.errorHandler.call(null, err, vm, info);
+  if (config.errorHandler) {
+    config.errorHandler.call(null, err, vm, info);
   } else {
     if (process.env.NODE_ENV !== 'production') {
       warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
@@ -863,7 +863,7 @@ var hasSymbol =
 /**
  * Defer a task to execute it asynchronously.
  */
-var nextTick$$1 = (function () {
+var nextTick = (function () {
   var callbacks = [];
   var pending = false;
   var timerFunc;
@@ -1311,7 +1311,7 @@ function dependArray (value) {
  * how to merge a parent option value and a child option
  * value into the final value.
  */
-var strats = config$$1.optionMergeStrategies;
+var strats = config.optionMergeStrategies;
 
 /**
  * Options with restrictions
@@ -1511,7 +1511,7 @@ var defaultStrat = function (parentVal, childVal) {
 function checkComponents (options) {
   for (var key in options.components) {
     var lower = key.toLowerCase();
-    if (isBuiltInTag(lower) || config$$1.isReservedTag(lower)) {
+    if (isBuiltInTag(lower) || config.isReservedTag(lower)) {
       warn(
         'Do not use built-in or reserved HTML elements as component ' +
         'id: ' + key
@@ -1857,7 +1857,7 @@ if (process.env.NODE_ENV !== 'production') {
 
   if (hasProxy) {
     var isBuiltInModifier = makeMap('stop,prevent,self,ctrl,shift,alt,meta');
-    config$$1.keyCodes = new Proxy(config$$1.keyCodes, {
+    config.keyCodes = new Proxy(config.keyCodes, {
       set: function set (target, key, value) {
         if (isBuiltInModifier(key)) {
           warn(("Avoid overwriting built-in modifier in config.keyCodes: ." + key));
@@ -2341,7 +2341,7 @@ function resolveAsyncComponent (
       }
     };
 
-    var resolve = once$$1(function (res) {
+    var resolve = once(function (res) {
       // cache resolved
       factory.resolved = ensureCtor(res, baseCtor);
       // invoke callbacks only if this is not a synchronous resolve
@@ -2351,7 +2351,7 @@ function resolveAsyncComponent (
       }
     });
 
-    var reject = once$$1(function (reason) {
+    var reject = once(function (reason) {
       process.env.NODE_ENV !== 'production' && warn(
         "Failed to resolve async component: " + (String(factory)) +
         (reason ? ("\nReason: " + reason) : '')
@@ -2785,7 +2785,7 @@ function mountComponent (
 
   var updateComponent;
   /* istanbul ignore if */
-  if (process.env.NODE_ENV !== 'production' && config$$1.performance && mark) {
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
     updateComponent = function () {
       var name = vm._name;
       var id = vm._uid;
@@ -3020,7 +3020,7 @@ function flushSchedulerQueue () {
 
   // devtool hook
   /* istanbul ignore if */
-  if (devtools && config$$1.devtools) {
+  if (devtools && config.devtools) {
     devtools.emit('flush');
   }
 }
@@ -3077,7 +3077,7 @@ function queueWatcher (watcher) {
     // queue the flush
     if (!waiting) {
       waiting = true;
-      nextTick$$1(flushSchedulerQueue);
+      nextTick(flushSchedulerQueue);
     }
   }
 }
@@ -3384,7 +3384,7 @@ function initProps (vm, propsOptions) {
     var value = validateProp(key, propsOptions, propsData, vm);
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
-      if (isReservedAttribute(key) || config$$1.isReservedAttr(key)) {
+      if (isReservedAttribute(key) || config.isReservedAttr(key)) {
         warn(
           ("\"" + key + "\" is a reserved attribute and cannot be used as component prop."),
           vm
@@ -4080,11 +4080,11 @@ function _createElement (
   var vnode, ns;
   if (typeof tag === 'string') {
     var Ctor;
-    ns = (context.$vnode && context.$vnode.ns) || config$$1.getTagNamespace(tag);
-    if (config$$1.isReservedTag(tag)) {
+    ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
+    if (config.isReservedTag(tag)) {
       // platform built-in elements
       vnode = new VNode(
-        config$$1.parsePlatformTagName(tag), data, children,
+        config.parsePlatformTagName(tag), data, children,
         undefined, undefined, context
       );
     } else if (isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
@@ -4213,7 +4213,7 @@ function checkKeyCodes (
   key,
   builtInAlias
 ) {
-  var keyCodes = config$$1.keyCodes[key] || builtInAlias;
+  var keyCodes = config.keyCodes[key] || builtInAlias;
   if (Array.isArray(keyCodes)) {
     return keyCodes.indexOf(eventKeyCode) === -1
   } else {
@@ -4253,7 +4253,7 @@ function bindObjectProps (
           hash = data;
         } else {
           var type = data.attrs && data.attrs.type;
-          hash = asProp || config$$1.mustUseProp(tag, type, key)
+          hash = asProp || config.mustUseProp(tag, type, key)
             ? data.domProps || (data.domProps = {})
             : data.attrs || (data.attrs = {});
         }
@@ -4393,7 +4393,7 @@ function initRender (vm) {
 
 function renderMixin (Vue) {
   Vue.prototype.$nextTick = function (fn) {
-    return nextTick$$1(fn, this)
+    return nextTick(fn, this)
   };
 
   Vue.prototype._render = function () {
@@ -4487,7 +4487,7 @@ function initMixin (Vue) {
 
     var startTag, endTag;
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config$$1.performance && mark) {
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       startTag = "vue-perf-init:" + (vm._uid);
       endTag = "vue-perf-end:" + (vm._uid);
       mark(startTag);
@@ -4526,7 +4526,7 @@ function initMixin (Vue) {
     callHook(vm, 'created');
 
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config$$1.performance && mark) {
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false);
       mark(endTag);
       measure(((vm._name) + " init"), startTag, endTag);
@@ -4612,20 +4612,20 @@ function dedupe (latest, extended, sealed) {
   }
 }
 
-function Vue$3$1 (options) {
+function Vue$3 (options) {
   if (process.env.NODE_ENV !== 'production' &&
-    !(this instanceof Vue$3$1)
+    !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
   }
   this._init(options);
 }
 
-initMixin(Vue$3$1);
-stateMixin(Vue$3$1);
-eventsMixin(Vue$3$1);
-lifecycleMixin(Vue$3$1);
-renderMixin(Vue$3$1);
+initMixin(Vue$3);
+stateMixin(Vue$3);
+eventsMixin(Vue$3);
+lifecycleMixin(Vue$3);
+renderMixin(Vue$3);
 
 /*  */
 
@@ -4772,7 +4772,7 @@ function initAssetRegisters (Vue) {
       } else {
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'production') {
-          if (type === 'component' && config$$1.isReservedTag(id)) {
+          if (type === 'component' && config.isReservedTag(id)) {
             warn(
               'Do not use built-in or reserved HTML elements as component ' +
               'id: ' + id
@@ -4901,7 +4901,7 @@ var builtInComponents = {
 function initGlobalAPI (Vue) {
   // config
   var configDef = {};
-  configDef.get = function () { return config$$1; };
+  configDef.get = function () { return config; };
   if (process.env.NODE_ENV !== 'production') {
     configDef.set = function () {
       warn(
@@ -4923,7 +4923,7 @@ function initGlobalAPI (Vue) {
 
   Vue.set = set;
   Vue.delete = del;
-  Vue.nextTick = nextTick$$1;
+  Vue.nextTick = nextTick;
 
   Vue.options = Object.create(null);
   ASSET_TYPES.forEach(function (type) {
@@ -4942,20 +4942,20 @@ function initGlobalAPI (Vue) {
   initAssetRegisters(Vue);
 }
 
-initGlobalAPI(Vue$3$1);
+initGlobalAPI(Vue$3);
 
-Object.defineProperty(Vue$3$1.prototype, '$isServer', {
+Object.defineProperty(Vue$3.prototype, '$isServer', {
   get: isServerRendering
 });
 
-Object.defineProperty(Vue$3$1.prototype, '$ssrContext', {
+Object.defineProperty(Vue$3.prototype, '$ssrContext', {
   get: function get () {
     /* istanbul ignore next */
     return this.$vnode && this.$vnode.ssrContext
   }
 });
 
-Vue$3$1.version = '2.4.4';
+Vue$3.version = '2.4.4';
 
 /*  */
 
@@ -5400,8 +5400,8 @@ function createPatchFunction (backend) {
         if (
           !inPre &&
           !vnode.ns &&
-          !(config$$1.ignoredElements.length && config$$1.ignoredElements.indexOf(tag) > -1) &&
-          config$$1.isUnknownElement(tag)
+          !(config.ignoredElements.length && config.ignoredElements.indexOf(tag) > -1) &&
+          config.isUnknownElement(tag)
         ) {
           warn(
             'Unknown custom element: <' + tag + '> - did you ' +
@@ -6875,7 +6875,7 @@ function enter (vnode, toggleDisplay) {
   var expectsCSS = css !== false && !isIE9;
   var userWantsControl = getHookArgumentsLength(enterHook);
 
-  var cb = el._enterCb = once$$1(function () {
+  var cb = el._enterCb = once(function () {
     if (expectsCSS) {
       removeTransitionClass(el, toClass);
       removeTransitionClass(el, activeClass);
@@ -6978,7 +6978,7 @@ function leave (vnode, rm) {
     checkDuration(explicitLeaveDuration, 'leave', vnode);
   }
 
-  var cb = el._leaveCb = once$$1(function () {
+  var cb = el._leaveCb = once(function () {
     if (el.parentNode && el.parentNode._pending) {
       el.parentNode._pending[vnode.key] = null;
     }
@@ -7596,9 +7596,6 @@ var TransitionGroup = {
     children.forEach(applyTranslation);
 
     // force reflow to put everything in position
-    var body = document.body;
-    var f = body.offsetHeight; // eslint-disable-line
-
     children.forEach(function (c) {
       if (c.data.moved) {
         var el = c.elm;
@@ -7681,21 +7678,21 @@ var platformComponents = {
 /*  */
 
 // install platform specific utils
-Vue$3$1.config.mustUseProp = mustUseProp;
-Vue$3$1.config.isReservedTag = isReservedTag;
-Vue$3$1.config.isReservedAttr = isReservedAttr;
-Vue$3$1.config.getTagNamespace = getTagNamespace;
-Vue$3$1.config.isUnknownElement = isUnknownElement;
+Vue$3.config.mustUseProp = mustUseProp;
+Vue$3.config.isReservedTag = isReservedTag;
+Vue$3.config.isReservedAttr = isReservedAttr;
+Vue$3.config.getTagNamespace = getTagNamespace;
+Vue$3.config.isUnknownElement = isUnknownElement;
 
 // install platform runtime directives & components
-extend(Vue$3$1.options.directives, platformDirectives);
-extend(Vue$3$1.options.components, platformComponents);
+extend(Vue$3.options.directives, platformDirectives);
+extend(Vue$3.options.components, platformComponents);
 
 // install platform patch function
-Vue$3$1.prototype.__patch__ = inBrowser ? patch : noop;
+Vue$3.prototype.__patch__ = inBrowser ? patch : noop;
 
 // public mount method
-Vue$3$1.prototype.$mount = function (
+Vue$3.prototype.$mount = function (
   el,
   hydrating
 ) {
@@ -7706,9 +7703,9 @@ Vue$3$1.prototype.$mount = function (
 // devtools global hook
 /* istanbul ignore next */
 setTimeout(function () {
-  if (config$$1.devtools) {
+  if (config.devtools) {
     if (devtools) {
-      devtools.emit('init', Vue$3$1);
+      devtools.emit('init', Vue$3);
     } else if (process.env.NODE_ENV !== 'production' && isChrome) {
       console[console.info ? 'info' : 'log'](
         'Download the Vue Devtools extension for a better development experience:\n' +
@@ -7717,7 +7714,7 @@ setTimeout(function () {
     }
   }
   if (process.env.NODE_ENV !== 'production' &&
-    config$$1.productionTip !== false &&
+    config.productionTip !== false &&
     inBrowser && typeof console !== 'undefined'
   ) {
     console[console.info ? 'info' : 'log'](
@@ -7830,21 +7827,21 @@ var View = {
   }
 };
 
-function resolveProps (route, config$$1) {
-  switch (typeof config$$1) {
+function resolveProps (route, config) {
+  switch (typeof config) {
     case 'undefined':
       return
     case 'object':
-      return config$$1
+      return config
     case 'function':
-      return config$$1(route)
+      return config(route)
     case 'boolean':
-      return config$$1 ? route.params : undefined
+      return config ? route.params : undefined
     default:
       if (process.env.NODE_ENV !== 'production') {
         warn$1(
           false,
-          "props in \"" + (route.path) + "\" is a " + (typeof config$$1) + ", " +
+          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
           "expecting an object, function or boolean."
         );
       }
@@ -10234,22 +10231,140 @@ if (inBrowser$1 && window.Vue) {
   window.Vue.use(VueRouter);
 }
 
-var Hello = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)},staticRenderFns: [function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('form',{attrs:{"action":"http://localhost:8081/api/submission","enctype":"multipart/form-data","method":"POST"}},[_c('p',[_vm._v(" App Name ")]),_vm._v(" "),_c('input',{attrs:{"name":"appName","value":"A Fancy App for All the Chaps"}}),_vm._v(" "),_c('p',[_vm._v(" Email ")]),_vm._v(" "),_c('input',{attrs:{"name":"email","value":"nick@fog.haus"}}),_vm._v(" "),_c('p',[_vm._v(" App Binary ")]),_vm._v(" "),_c('input',{attrs:{"type":"file","name":"submission","multiple":"multiple"}}),_vm._v(" "),_c('button',{attrs:{"type":"submit"}},[_vm._v(" Upload ")])])])}],_scopeId: 'data-v-361a4bd2',
+var Hello = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"c-form"},[_c('p',[_vm._v(" App Name ")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.appName),expression:"appName"}],domProps:{"value":(_vm.appName)},on:{"input":function($event){if($event.target.composing){ return; }_vm.appName=$event.target.value;}}}),_vm._v(" "),_c('p',[_vm._v(" Email ")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.email),expression:"email"}],domProps:{"value":(_vm.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.email=$event.target.value;}}}),_vm._v(" "),_c('p',[_vm._v(" App Binary ")]),_vm._v(" "),_c('input',{attrs:{"type":"file"},on:{"change":function($event){_vm.file = $event.target.files[0];}}}),_vm._v(" "),_c('button',{attrs:{"type":"button"},on:{"click":_vm.emitFile}},[_vm._v(" Upload ")])])},staticRenderFns: [],_scopeId: 'data-v-361a4bd2',
   data: function data () {
     return {
+      appName: 'A Fancy App for All the Chaps',
+      email: 'nick@fog.haus',
     }
   },
+
+  methods: {
+    emitFile: function emitFile () {
+      var payload = {
+        appName: this.appName,
+        email: this.email,
+        file: this.file
+      };
+
+      this.appName = "";
+      this.email = "";
+      this.file = null;
+
+      this.$emit('submitted', payload);
+    }
+  }
 };
 
-var App = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"app"},[_c('Hello')],1)},staticRenderFns: [],
-  components: { Hello: Hello }
+var App = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"app"},[_c('Hello',{on:{"submitted":_vm.processSubmission}})],1)},staticRenderFns: [],
+  components: { Hello: Hello },
+  methods: {
+    processSubmission: function processSubmission (p) {
+      console.info(p);
+
+      this.$az.createBlob(p.file)
+        .then(function (res) {
+          console.info(res);
+        });
+    }
+  }
 };
 
-Vue$3$1.use(VueRouter);
+// singleton?
+var client = null;
+var _container;
+var _sas;
+var _svc$1;
 
-var app = new Vue$3$1({
+var az = { init: init, getClient: getClient, createBlob: createBlob };
+
+// get the sas token and create the client
+function init (svc, container, sasEndpoint, sasPerms) {
+  if ( sasPerms === void 0 ) sasPerms='w';
+
+  _container = container;
+
+  fetchSAS(container, sasEndpoint, sasPerms)
+    .then(function (token) {
+      _sas = token.token;
+      return getClient(_sas, svc)
+    });
+}
+
+// pass with credentials to set up a client the first time
+// pass with credentials to update sas or both
+// first call creates, other return cached
+function getClient (sas, svc) {
+  if (!_sas && !sas) { return Promise.reject(new Error('az::getClient::first_call_requires_credentials')) }
+  if (!_svc$1 && !svc) { return Promise.reject(new Error('az::getClient::first_call_requires_credentials')) }
+
+  // use cached if none passed
+  sas = sas || _sas;
+  svc = svc || _svc$1;
+
+  // construct client if none using passed over cached
+  if (!client)
+    { client = window.AzureStorage.createBlobServiceWithSas(("https://" + svc + ".blob.core.windows.net"), sas); }
+
+  // cache if passed
+  if (svc) { _svc$1 = svc; }
+  if (sas) { _sas = sas; }
+
+  return Promise.resolve(client)
+}
+
+function createBlob (file, container) {
+  container = container || _container;
+
+  return new Promise (function (res, rej) {
+    getClient()
+    .then(function (client) { return client.createBlockBlobFromBrowserFile(container, file.name, file, function (err, result, response) {
+        if (err) { rej(err); }
+        else { res({ result: result, response: response}); }
+      }); }
+    );
+  })
+}
+
+function fetchSAS (container, endpoint, perms) {
+  // is this fug or what :DDDD
+  return fetch(endpoint
+    + '&container=' + container
+    + '&permissions=' + perms || 'w'
+
+    // options
+    , {
+      credentials: 'same-origin', // or 'include' for cors
+      //headers: {},
+      //body: JSON.stringify([])
+      }
+    )
+    .then(function (resp) { return resp.json()
+       // wrap u pthe response body togo with the status code and ok flag
+      .then(function (data) { return ({
+          ok: resp.ok,
+          status: resp.status,
+          token: data.token
+      }); }); }
+    )
+}
+
+var _svc = 'eimsfunchello9c2a';
+var container = 'mcoe-ipas';
+var sas = 'https://appload-sas-token.azurewebsites.net/api/GetSasToken-Node?code=ehp76eDOr/1tEGKGtUOU0NdLXXtXtbCoL4vITYairZCaLdZCVqGaig==';
+
+Vue$3.use({ install: function install (Vue$$1, opts) {
+  Vue$$1.prototype.$az = az;
+  az.init(_svc, container, sas);
+}});
+
+Vue$3.use(VueRouter);
+
+var app = new Vue$3({
   el: '#app',
-  render: function (h) { return h(App); }
+  render: function (h) { return h(App); },
+  created: function created () {
+  }
 });
 
 })));
