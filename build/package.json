@@ -9,6 +9,7 @@
     "build:js": "cross-env NODE_ENV=production rollup -c",
     "build:autoprefixer": "postcss --use autoprefixer -o dist/css/app.css dist/css/app.css",
     "build:cssnano": "cssnano dist/css/app.css dist/css/app.css",
+    "build:cp": "cp -r dist/* ..",
     "start:dev": "run-p start:scss start:rollup",
     "start:scss": "node-sass -rw src/scss -o dist/css",
     "start:rollup": "cross-env NODE_ENV=development rollup -cw"
